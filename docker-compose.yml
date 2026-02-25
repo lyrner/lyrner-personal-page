@@ -1,0 +1,26 @@
+# lyrner.se — main landing page
+#
+# Replace YOUR_GITHUB_USERNAME with your actual GitHub username before deploying.
+#
+# Required GitHub Actions secrets (used by deploy.yml):
+#   SSH_HOST         — VPS IP address
+#   SSH_PRIVATE_KEY  — deploy user's private key
+#   DEPLOY_PATH      — absolute path on the server, e.g. /home/deploy/projects/lyrner
+
+services:
+  app:
+    image: ghcr.io/lyrner/lyrner-main:latest
+    container_name: lyrner
+    restart: unless-stopped
+    networks:
+      - traefik-public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.lyrner.rule=Host(`lyrner.se`) || Host(`www.lyrner.se`)"
+      - "traefik.http.routers.lyrner.entrypoints=websecure"
+      - "traefik.http.routers.lyrner.tls.certresolver=letsencrypt"
+      - "traefik.http.services.lyrner.loadbalancer.server.port=8080"
+
+networks:
+  traefik-public:
+    external: true
