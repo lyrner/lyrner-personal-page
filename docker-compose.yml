@@ -9,7 +9,7 @@
 
 services:
   app:
-    image: ghcr.io/lyrner/lyrner-main:latest
+    image: ghcr.io/lyrner/lyrner-personal-page:latest
     container_name: lyrner
     restart: unless-stopped
     networks:
